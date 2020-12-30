@@ -3,11 +3,23 @@
     <h3>
       Todos
     </h3>
+    <div class="legend">
+      <span>Double click to mark as complete</span>
+      <span>
+        <span class="incomplete-box"></span> = Incomplete
+      </span>
+      <span>
+        <span class="complete-box"></span> = Complete
+      </span>
+    </div>
     <div class="todos">
       <div class="todo"
+           :class="{ 'is-complete':todo.completed }"
+           @dblclick="dblClick(todo)"
             v-for="todo in allTodos" :key="todo.id"
       >
         {{ todo.title }}
+        <i @click="deleteTodo(todo.id)" class="fas fa-trash-alt"></i>
       </div>
     </div>
   </div>
@@ -20,7 +32,15 @@ export default {
   name: 'Todos',
   computed: mapGetters(['allTodos']),
   methods: {
-    ...mapActions(['fetchTodos'])
+    ...mapActions(['fetchTodos', 'deleteTodo', 'updateTodo']),
+    dblClick(todo) {
+      const updatedTodo = {
+        id: todo.id,
+        title: todo.title,
+        completed: !todo.completed
+      }
+      this.updateTodo(updatedTodo)
+    }
   },
   created() {
     this.fetchTodos()

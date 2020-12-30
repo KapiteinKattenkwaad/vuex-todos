@@ -5,8 +5,8 @@
     </h3>
 
     <div class="add">
-      <form action="">
-        <input type="text" v-model="titleIng" placeholder="Add todo">
+      <form @submit="onSubmit" >
+        <input type="text" v-model="title" placeholder="Add todo">
         <input type="submit" value="Submit">
       </form>
     </div>
@@ -16,8 +16,22 @@
 
 <script>
 
+  import { mapActions } from 'vuex'
+
 export default {
   name: 'AddTodos',
+  data() {
+    return {
+      title: ''
+    }
+  },
+  methods: {
+    ...mapActions(['addTodo']),
+    onSubmit(e) {
+      e.preventDefault()
+      this.addTodo(this.title)
+    }
+  },
 }
 </script>
 
